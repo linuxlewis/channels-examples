@@ -1,3 +1,5 @@
 Django>=1.9
 channels>=0.10
 asgi_redis>=0.9
+djangorestframework>=3.0
+channels_api==0.2.2

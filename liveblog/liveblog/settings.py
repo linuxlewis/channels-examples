@@ -30,6 +30,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'channels',
     'posts',
+    'rest_framework',
+    'channels_api'
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -86,7 +88,7 @@ WSGI_APPLICATION = 'liveblog.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': '/db/db.sqlite3',
     }
 }
 

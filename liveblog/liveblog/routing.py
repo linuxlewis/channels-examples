@@ -1,5 +1,13 @@
-from channels import route
-from posts.consumers import connect_blog, disconnect_blog
+from channels import route, route_class
+from channels.generic.websockets import WebsocketDemultiplexer
+
+from posts.bindings import LiveblogResource
+
+class APIDemultiplexer(WebsocketDemultiplexer):
+
+    mapping = {
+        'liveblogs': 'liveblogs'
+    }
 
 
 # The channel routing defines what channels get handled by what consumers,
@@ -8,11 +16,8 @@ from posts.consumers import connect_blog, disconnect_blog
 # While this is under stream/ compared to the HTML page, we could have it on the
 # same URL if we wanted; Daphne separates by protocol as it negotiates with a browser.
 channel_routing = [
-    # Called when incoming WebSockets connect
-    route("websocket.connect", connect_blog, path=r'^/liveblog/(?P<slug>[^/]+)/stream/$'),
-
-    # Called when the client closes the socket
-    route("websocket.disconnect", disconnect_blog, path=r'^/liveblog/(?P<slug>[^/]+)/stream/$'),
+    route_class(APIDemultiplexer),
+    route("liveblogs", LiveblogResource.consumer)
 
     # A default "http.request" route is always inserted by Django at the end of the routing list
     # that routes all unmatched HTTP requests to the Django view system. If you want lower-level
